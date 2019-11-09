@@ -16,7 +16,6 @@
       </el-menu-item>
       <el-submenu v-else class="login"  index="">
       <template slot="title">
-       <!-- <img src="../img/head.jpg" style="height:30%;display:inline"> -->
         {{name}}
       </template>
       <el-menu-item index="/info">个人中心</el-menu-item>

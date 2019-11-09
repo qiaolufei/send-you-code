@@ -4,11 +4,11 @@
     <!-- 登录表单 -->
     <div class="loginForm">
       <span class="loginForm__name">登录</span>
-      <el-form ref="form" :model="form">
-        <el-input v-model="form.name" class="marTop" placeholder="用户名">
+      <el-form ref="form" :model="loginForm">
+        <el-input v-model="loginForm.name" class="marTop" placeholder="用户名">
           <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
         </el-input>
-        <el-input v-model="form.password" class="marTop" type="password" placeholder="密码">
+        <el-input v-model="loginForm.password" class="marTop" type="password" placeholder="密码">
           <i slot="prefix" class="el-input__icon el-icon-lock"></i>
         </el-input>
         <el-button class="marTop" @click="login" type="primary">登录</el-button>
@@ -27,24 +27,24 @@
     </div>
     <!-- 注册弹窗 -->
     <el-dialog title="注册" :visible.sync="toRegister" width="40%" class="registerForm">
-      <el-input placeholder="用户名">
+      <el-input v-model.lazy="registerForm.name" @change="nameIsHave()" placeholder="用户名">
           <i slot="prefix" class="el-input__icon el-icon-user"></i>
       </el-input>
-      <el-input class="marTop" placeholder="手机号">
+      <el-input class="marTop" v-model="registerForm.phone" @change="phoneIsRight()" placeholder="手机号">
           <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
       </el-input>
-      <el-input class="marTop" placeholder="设置密码">
+      <el-input class="marTop" type="password" v-model="registerForm.password1" placeholder="设置密码">
           <i slot="prefix" class="el-input__icon el-icon-lock"></i>
       </el-input>
-      <el-input class="marTop" placeholder="确认密码">
+      <el-input class="marTop" type="password" v-model="registerForm.password2" @change="PwdIsRight()" placeholder="确认密码">
           <i slot="prefix" class="el-input__icon el-icon-circle-check"></i>
       </el-input>
-      <el-input class="marTop" placeholder="验证码" style="width:50%">
+      <!-- <el-input class="marTop" placeholder="验证码" style="width:50%">
           <i slot="prefix" class="el-input__icon el-icon-s-comment"></i>
       </el-input>
-      <el-input type="button" class="registerForm__getV" style="width:30%" value="获取验证码"></el-input>
+      <el-input type="button" class="registerForm__getV" style="width:30%" value="获取验证码"></el-input> -->
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="register">注册</el-button>
+        <el-button type="primary" :disabled="isdisabled" @click="register()">注册</el-button>
       </span>
     </el-dialog>
   </div>
@@ -54,29 +54,40 @@ import headpage from '@/components/header'
 export default {
   data () {
     return {
-      form: {
+      loginForm: { // 登录数据
         name: '',
         password: ''
       },
-      toRegister: false,
-      checked: false
+      registerForm: { // 注册数据
+        name: '',
+        phone: '',
+        password1: '',
+        password2: ''
+      },
+      toRegister: false, // 注册弹窗
+      checked: false, // 记住我
+      isdisabled: true, // 注册按钮
+      nameIsHave1: 0, // 用户名是否存在
+      phoneIsRight1: 0, // 手机号是否正确
+      PwdIsRight1: 0 // 密码是否一致
     }
   },
   components: {
     headpage
   },
   methods: {
+    // 登录
     login () {
       // 先判断是否为空，然后传参
-      if (this.form.name === '' || this.form.password === '') {
+      if (this.loginForm.name === '' || this.loginForm.password === '') {
         this.$message({
           message: '用户名或密码不能为空',
           type: 'warning'
         })
       } else {
         let params = {
-          name: this.form.name,
-          password: this.form.password
+          name: this.loginForm.name,
+          password: this.loginForm.password
         }
         this.axios.post(this.$api + '/user/login', this.$qs.stringify(params))
           .then(res => {
@@ -88,7 +99,8 @@ export default {
                 type: 'success',
                 duration: 1000
               })
-              sessionStorage.setItem('name', this.form.name)
+              // 登录成功后存储name
+              sessionStorage.setItem('name', this.loginForm.name)
               this.$router.push({ path: './' })
             } else {
               this.$message.error('用户名或密码错误')
@@ -96,7 +108,72 @@ export default {
           })
       }
     },
-    register () {}
+    // 检查用户名是否存在
+    nameIsHave () {
+      let params = {
+        name: this.registerForm.name
+      }
+      this.axios.post(this.$api + '/user/findName', this.$qs.stringify(params))
+        .then(res => {
+          console.log(res)
+          if (res.data === 0) {
+            this.$notify.error({
+              title: '错误',
+              message: '该用户名已被注册,请更改',
+              position: 'top-left'
+            })
+          } else {
+            this.nameIsHave1 = 1
+          }
+        })
+    },
+    // 检查手机号格式是否正确
+    phoneIsRight () {
+      if (this.registerForm.phone.length === 11) {
+        this.phoneIsRight1 = 1
+      } else {
+        this.$notify.error({
+          title: '错误',
+          message: '请输入正确的11位手机号',
+          position: 'top-left'
+        })
+      }
+    },
+    // 检查两次密码是否相同
+    PwdIsRight () {
+      if (this.registerForm.password1 === this.registerForm.password2 || this.registerForm.password1 === '') {
+        this.isdisabled = false
+        this.PwdIsRight1 = 1
+      } else {
+        this.$notify.error({
+          title: '错误',
+          message: '两次密码不同，请修改',
+          position: 'top-left'
+        })
+      }
+    },
+    // 注册
+    register () {
+      if (this.nameIsHave1 === 1 && this.phoneIsRight1 === 1 && this.PwdIsRight1 === 1) {
+        let params = {
+          name: this.registerForm.name,
+          phone: this.registerForm.phone,
+          password: this.registerForm.password2
+        }
+        this.axios.post(this.$api + '/user/register', this.$qs.stringify(params))
+          .then(res => {
+            if (res.data.code === 0) {
+              this.loginForm.name = this.registerForm.name
+              this.toRegister = false
+              this.$message({
+                message: '注册成功，请登录',
+                type: 'success',
+                duration: 3000
+              })
+            }
+          })
+      }
+    }
   }
 }
 </script>
