@@ -3,33 +3,33 @@
         <headpage></headpage>
         <div class="selectList">
         <span>技术栈：</span>
-        <el-radio-group v-model="radio1" size="mini">
+        <el-radio-group v-model="skill" @change="getWants" size="mini">
           <el-radio-button :label=item.id v-for="(item,index) of skills" :key=index></el-radio-button>
         </el-radio-group>
         <br><br>
         <span>工作时间类型：</span>
-        <el-radio-group v-model="radio2" size="mini" @change="getTimeType()">
+        <el-radio-group v-model="type" size="mini" @change="getWants">
           <el-radio-button :label=item.id v-for="(item,index) of timeType" :key=index></el-radio-button>
         </el-radio-group>
         <br><br>
         <span>工时：</span>
-        <el-select v-model="working" :disabled=dis placeholder="请选择" size="mini">
+        <el-select v-model="working" @change="getWants" :disabled=dis placeholder="请选择" size="mini">
           <el-option
             v-for="item in options1"
-            :key="item.value"
+            :key="item.label"
             :label="item.label"
-            :value="item.value">
+            :value="item.label">
           </el-option>
         </el-select>
         <b>{{hourOrDay}}</b>
         <br><br>
         <span>总薪资：</span>
-        <el-select v-model="money" placeholder="请选择" size="mini">
+        <el-select v-model="money" @change="getWants" placeholder="请选择" size="mini">
           <el-option
             v-for="item in options2"
-            :key="item.value"
+            :key="item.label"
             :label="item.label"
-            :value="item.value">
+            :value="item.label">
           </el-option>
         </el-select>
         <b>元</b>
@@ -90,10 +90,14 @@ export default {
       skills: [{id: '全部'}, {id: 'PHP'}, {id: 'C'}, {id: 'C++'}, {id: 'python'},
         {id: 'Java'}, {id: 'javaScript'}, {id: 'Android'}, {id: 'Go'}, {id: 'NodeJS'}, {id: '前端开发'}, {id: '其它'}],
       timeType: [{id: '全部'}, {id: '按天'}, {id: '按小时'}],
-      radio1: '全部',
-      radio2: '全部',
-      hourOrDay: '',
-      dis: true,
+      search: {
+        skill: '全部',
+        type: '全部',
+        hourOrDay: '',
+        working: '全部',
+        money: '全部',
+        dis: true
+      },
       options1: [{
         value: '1',
         label: '全部'
@@ -135,8 +139,6 @@ export default {
       }
       ],
       wantsList: [],
-      working: '全部',
-      money: '全部',
       currentPage: 1,
       total: 0
     }
@@ -146,20 +148,33 @@ export default {
   },
   created () {
     this.currentPage = Number(sessionStorage.getItem('page')) || 1
-    this.getWants(this.currentPage)
+    this.skill = sessionStorage.getItem('skill') || '全部'
+    this.type = sessionStorage.getItem('timeType') || '全部'
+    this.working = sessionStorage.getItem('working') || '全部'
+    this.money = sessionStorage.getItem('money') || '全部'
+    this.getWants()
   },
   beforeUpdate () {
     sessionStorage.setItem('page', this.currentPage)
+    sessionStorage.setItem('skill', this.skill)
+    sessionStorage.setItem('timeType', this.type)
+    sessionStorage.setItem('working', this.working)
+    sessionStorage.setItem('money', this.money)
   },
   beforeDestroy () {
-    sessionStorage.setItem('page', 1)
+    sessionStorage.removeItem('page')
+    sessionStorage.removeItem('skill')
+    sessionStorage.removeItem('timeType')
+    sessionStorage.removeItem('working')
+    sessionStorage.removeItem('money')
   },
   methods: {
-    getTimeType () {
-      if (this.radio2 === '按小时') {
+    getWants () {
+      // 根据时间类型来动态改变工时
+      if (this.type === '按小时') {
         this.hourOrDay = '小时'
         this.dis = false
-      } else if (this.radio2 === '按天') {
+      } else if (this.type === '按天') {
         this.hourOrDay = '天'
         this.dis = false
       } else {
@@ -167,12 +182,14 @@ export default {
         this.dis = true
         this.working = '全部'
       }
-    },
-    getWants (currentPage) {
-      this.currentPage = currentPage
+      // 改变url
       this.$router.replace({
         path: this.$route.path,
         query: {
+          skill: this.skill,
+          timeType: this.type,
+          working: this.working,
+          money: this.money,
           page: this.currentPage
         }
       })
@@ -182,7 +199,6 @@ export default {
       this.wantsList = [] // 每次清空数据
       this.axios.get(this.$api + '/want/getWants?' + this.$qs.stringify(params))
         .then(res => {
-          // console.log(res)
           let data = res.data.data
           this.total = data.totalElements // 数据总数
           this.wantsList = data.content
