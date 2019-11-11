@@ -4,7 +4,16 @@
         <div class="want">
             <label>需求主题<b>*</b></label><el-input class="input1" v-model="want.theme" placeholder="请输入需求主题"></el-input>
             <br><br>
-            <label>技术标签<b>*</b></label><a href="#"><i class="el-icon-circle-plus"></i>添加标签</a><span style="font-size:0.2rem;color:#D54B28;margin-left:1%">最多可添加3个标签</span>
+            <label>技术标签<b>*</b></label>
+            <el-select v-model="want.skills" @change="isable" multiple placeholder="请选择" style="width:35%">
+              <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.id"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <span style="font-size:0.2rem;color:#D54B28;margin-left:1%">最多可添加3个标签</span>
             <br><br>
             <label>具体需求<b>*</b></label><el-input class="input1" type="textarea" v-model="want.content" :rows="4" placeholder="请输入具体需求内容" maxlength="500" resize="none" show-word-limit></el-input>
             <br><br>
@@ -47,7 +56,7 @@ export default {
       name: sessionStorage.getItem('name'),
       want: {
         theme: '',
-        skills: 'C++',
+        skills: [],
         content: '',
         annex: '',
         timeType: 0,
@@ -55,6 +64,8 @@ export default {
         working: '',
         salary: ''
       },
+      options: [ {id: 'PHP'}, {id: 'C'}, {id: 'C++'}, {id: 'python'},
+        {id: 'Java'}, {id: 'javaScript'}, {id: 'Android'}, {id: 'Go'}, {id: 'NodeJS'}, {id: '前端开发'}, {id: '其它'}],
       hourOrDay: '小时'
     }
   },
@@ -62,6 +73,15 @@ export default {
     headpage
   },
   methods: {
+    isable () {
+      if (this.want.skills.length > 3) {
+        this.want.skills = this.want.skills.slice(0, 3)
+        this.$message({
+          message: '最多可添加3个标签',
+          type: 'warning'
+        })
+      }
+    },
     postWant () {
       this.$confirm('确认发布需求?', '提示', {
         confirmButtonText: '确定',
@@ -71,7 +91,7 @@ export default {
         let params = {
           theme: this.want.theme,
           name: this.name,
-          skills: this.want.skills,
+          skills: this.want.skills.toString(),
           content: this.want.content,
           timeType: this.want.timeType,
           startTime: this.want.startTime,

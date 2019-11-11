@@ -10,6 +10,13 @@ import myWants from '@/pages/personal/myWants'
 import history from '@/pages/personal/history'
 Vue.use(Router)
 
+/**
+ * 重写路由的replace方法
+ */
+const routerPush = Router.prototype.push
+Router.prototype.replace = function replace (location) {
+  return routerPush.call(this, location).catch(error => error)
+}
 export default new Router({
   mode: 'history',
   routes: [

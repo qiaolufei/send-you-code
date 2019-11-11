@@ -165,6 +165,7 @@ export default {
       } else {
         this.hourOrDay = ''
         this.dis = true
+        this.working = '全部'
       }
     },
     getWants (currentPage) {

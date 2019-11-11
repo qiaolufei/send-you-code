@@ -1,6 +1,6 @@
 <template>
   <div>
-      <el-col :span="3" style="margin-top:1%">
+      <el-col :span="3">
        <el-menu
       :default-active="this.$route.path"
       router
@@ -25,3 +25,8 @@
   </el-col>
   </div>
 </template>
+<style lang="less">
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    min-height: 800px;
+  }
+</style>
