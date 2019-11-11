@@ -1,19 +1,20 @@
 <template>
     <div class="wantsList">
         <headpage></headpage>
+        <!-- 条件检索 -->
         <div class="selectList">
         <span>技术栈：</span>
-        <el-radio-group v-model="skill" @change="getWants" size="mini">
+        <el-radio-group v-model="search.skill" @change="getWants" size="mini">
           <el-radio-button :label=item.id v-for="(item,index) of skills" :key=index></el-radio-button>
         </el-radio-group>
         <br><br>
         <span>工作时间类型：</span>
-        <el-radio-group v-model="type" size="mini" @change="getWants">
+        <el-radio-group v-model="search.type" size="mini" @change="getWants">
           <el-radio-button :label=item.id v-for="(item,index) of timeType" :key=index></el-radio-button>
         </el-radio-group>
         <br><br>
         <span>工时：</span>
-        <el-select v-model="working" @change="getWants" :disabled=dis placeholder="请选择" size="mini">
+        <el-select v-model="search.working" @change="getWants" :disabled=search.dis placeholder="请选择" size="mini">
           <el-option
             v-for="item in options1"
             :key="item.label"
@@ -24,7 +25,7 @@
         <b>{{hourOrDay}}</b>
         <br><br>
         <span>总薪资：</span>
-        <el-select v-model="money" @change="getWants" placeholder="请选择" size="mini">
+        <el-select v-model="search.money" @change="getWants" placeholder="请选择" size="mini">
           <el-option
             v-for="item in options2"
             :key="item.label"
@@ -34,6 +35,7 @@
         </el-select>
         <b>元</b>
         </div>
+        <!-- 需求列表 -->
         <div class="allWants">
           <center>
           <div v-for="(item, index) in wantsList" :key="index" class="allWants__one">
@@ -148,18 +150,18 @@ export default {
   },
   created () {
     this.currentPage = Number(sessionStorage.getItem('page')) || 1
-    this.skill = sessionStorage.getItem('skill') || '全部'
-    this.type = sessionStorage.getItem('timeType') || '全部'
-    this.working = sessionStorage.getItem('working') || '全部'
-    this.money = sessionStorage.getItem('money') || '全部'
+    this.search.skill = sessionStorage.getItem('skill') || '全部'
+    this.search.type = sessionStorage.getItem('timeType') || '全部'
+    this.search.working = sessionStorage.getItem('working') || '全部'
+    this.search.money = sessionStorage.getItem('money') || '全部'
     this.getWants()
   },
   beforeUpdate () {
     sessionStorage.setItem('page', this.currentPage)
-    sessionStorage.setItem('skill', this.skill)
-    sessionStorage.setItem('timeType', this.type)
-    sessionStorage.setItem('working', this.working)
-    sessionStorage.setItem('money', this.money)
+    sessionStorage.setItem('skill', this.search.skill)
+    sessionStorage.setItem('timeType', this.search.type)
+    sessionStorage.setItem('working', this.search.working)
+    sessionStorage.setItem('money', this.search.money)
   },
   beforeDestroy () {
     sessionStorage.removeItem('page')
@@ -171,25 +173,25 @@ export default {
   methods: {
     getWants () {
       // 根据时间类型来动态改变工时
-      if (this.type === '按小时') {
+      if (this.search.type === '按小时') {
         this.hourOrDay = '小时'
-        this.dis = false
-      } else if (this.type === '按天') {
+        this.search.dis = false
+      } else if (this.search.type === '按天') {
         this.hourOrDay = '天'
-        this.dis = false
+        this.search.dis = false
       } else {
         this.hourOrDay = ''
-        this.dis = true
-        this.working = '全部'
+        this.search.dis = true
+        this.search.working = '全部'
       }
       // 改变url
       this.$router.replace({
         path: this.$route.path,
         query: {
-          skill: this.skill,
-          timeType: this.type,
-          working: this.working,
-          money: this.money,
+          skill: this.search.skill,
+          timeType: this.search.type,
+          working: this.search.working,
+          money: this.search.money,
           page: this.currentPage
         }
       })
