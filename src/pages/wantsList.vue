@@ -76,6 +76,7 @@
         </div>
           <el-pagination
             class="wantsList__page"
+            background
             @current-change="getWants"
             :current-page.sync="currentPage"
             :page-size="10"
@@ -108,13 +109,13 @@ export default {
         label: '1-5'
       }, {
         value: '3',
-        label: '6-10'
+        label: '5-10'
       }, {
         value: '4',
         label: '10-15'
       }, {
         value: '5',
-        label: '16-20'
+        label: '15-20'
       }, {
         value: '6',
         label: '>20'
@@ -125,7 +126,7 @@ export default {
         label: '全部'
       }, {
         value: '2',
-        label: '<100'
+        label: '1-100'
       }, {
         value: '3',
         label: '100-500'
@@ -147,6 +148,21 @@ export default {
   },
   components: {
     headpage
+  },
+  watch: {
+    // 每次更改条件时，都要变回到第一页
+    'search.skill': function (val) {
+      this.currentPage = 1
+    },
+    'search.type': function (val) {
+      this.currentPage = 1
+    },
+    'search.working': function (val) {
+      this.currentPage = 1
+    },
+    'search.money': function (val) {
+      this.currentPage = 1
+    }
   },
   created () {
     this.currentPage = Number(sessionStorage.getItem('page')) || 1
@@ -196,14 +212,28 @@ export default {
         }
       })
       let params = {
+        skill: this.search.skill,
+        timeType: this.search.type,
+        working: this.search.working,
+        money: this.search.money,
         page: this.currentPage
       }
       this.wantsList = [] // 每次清空数据
       this.axios.get(this.$api + '/want/getWants?' + this.$qs.stringify(params))
         .then(res => {
+          console.log(res)
           let data = res.data.data
-          this.total = data.totalElements // 数据总数
-          this.wantsList = data.content
+          if (data !== null) {
+            this.total = data.totalElements // 数据总数
+            this.wantsList = data.content
+            this.$message({
+              message: '为您查找到' + this.total + '条需求',
+              type: 'success'
+            })
+          } else {
+            this.$message('抱歉，需求为空')
+            this.total = 0
+          }
         })
     }
   }
