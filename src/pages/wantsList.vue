@@ -69,7 +69,7 @@
            <div>
              <span>附件：</span><b>{{item.annex}}</b>
            </div>
-           <el-button type="primary" plain class="allWants__one-handle">处理需求</el-button>
+           <el-button type="primary" @click="handle(item.wantID)" plain class="allWants__one-handle">处理需求</el-button>
            <span>已有31人沟通</span>
           </div>
           </center>
@@ -235,6 +235,39 @@ export default {
             this.total = 0
           }
         })
+    },
+    handle (val) {
+      if (sessionStorage.getItem('name') === '' || sessionStorage.getItem('name') === null) {
+        this.$alert('请先登录', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$router.push({ path: './login' })
+          }
+        })
+      } else {
+        this.$confirm('是否接受此任务？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = {
+            customer: sessionStorage.getItem('name'),
+            wantID: val
+          }
+          this.axios.post(this.$api + '/record/addRecord', this.$qs.stringify(params))
+            .then(res => {
+              console.log(res)
+            })
+          // 新窗口打开消息中心页面
+          let routerData = this.$router.resolve({path: '/news', query: {wantId: val}})
+          window.open(routerData.href, '_blank')
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })
+        })
+      }
     }
   }
 }

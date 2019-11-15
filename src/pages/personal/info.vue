@@ -4,7 +4,8 @@
         <personalmenu></personalmenu>
         <el-col :span="20" class="info">
           <h4>个人资料</h4>
-          <hr>
+          <!-- <hr> -->
+           <el-divider content-position="center">{{name}}</el-divider>
           <el-col :span="3">
             <img src="../../img/head.jpg" alt="">
           </el-col>
@@ -17,7 +18,7 @@
             简介：
             <span>{{info.introduction}}</span>
             </span>
-            <hr>
+            <el-divider content-position="center">{{name}}</el-divider>
             <span class="info__mess-sex">
               性别：<span>{{info.sex}}</span>
             </span>

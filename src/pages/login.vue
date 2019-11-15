@@ -8,7 +8,7 @@
         <el-input v-model="loginForm.name" class="marTop" placeholder="用户名">
           <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
         </el-input>
-        <el-input v-model="loginForm.password" class="marTop" type="password" placeholder="密码">
+        <el-input v-model="loginForm.password" class="marTop" type="password" show-password placeholder="密码">
           <i slot="prefix" class="el-input__icon el-icon-lock"></i>
         </el-input>
         <el-button class="marTop" @click="login" type="primary">登录</el-button>

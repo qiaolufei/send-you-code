@@ -25,7 +25,7 @@
   </el-col>
   </div>
 </template>
-<style lang="less">
+<style lang="less" scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     min-height: 800px;
   }
