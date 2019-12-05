@@ -5,13 +5,14 @@
     <div class="loginForm">
       <span class="loginForm__name">登录</span>
       <el-form ref="form" :model="loginForm">
-        <el-input v-model="loginForm.name" class="marTop" placeholder="用户名">
+        <el-input v-model="loginForm.name" style="width:70%" class="marTop" placeholder="用户名">
           <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
         </el-input>
-        <el-input v-model="loginForm.password" class="marTop" type="password" show-password placeholder="密码">
+        <br>
+        <el-input v-model="loginForm.password" style="width:70%" class="marTop" type="password" @keyup.enter.native="login()" show-password placeholder="密码">
           <i slot="prefix" class="el-input__icon el-icon-lock"></i>
         </el-input>
-        <el-button class="marTop" @click="login" type="primary">登录</el-button>
+        <el-button class="marTop" @click="login()" type="primary">登录</el-button>
         <br />
         <br />
         <el-checkbox class="loginForm__remember" v-model="checked">记住我</el-checkbox>
@@ -76,6 +77,23 @@ export default {
     headpage
   },
   methods: {
+    // 在localStorage里存入用户名和密码；
+    setlocalStorage (name, pwd, checked) {
+      localStorage.setItem('loginName', name)
+      localStorage.setItem('loginPassword', pwd)
+      localStorage.setItem('checked', checked)
+    },
+    // 获取用户名和密码
+    getlocalStorage () {
+      let name = localStorage.getItem('loginName')
+      let password = localStorage.getItem('loginPassword')
+      let checked = localStorage.getItem('checked')
+      if (checked === 'true') {
+        this.loginForm.name = name
+        this.loginForm.password = password
+        this.checked = true
+      }
+    },
     // 登录
     login () {
       // 先判断是否为空，然后传参
@@ -91,7 +109,6 @@ export default {
         }
         this.axios.post(this.$api + '/user/login', this.$qs.stringify(params))
           .then(res => {
-            // console.log(res)
             let code = res.data.code
             if (code === 0) {
               this.$message({
@@ -101,6 +118,13 @@ export default {
               })
               // 登录成功后存储name
               sessionStorage.setItem('name', this.loginForm.name)
+              // 记住我功能
+              if (this.checked === true) {
+                this.setlocalStorage(this.loginForm.name, this.loginForm.password, this.checked)
+              } else {
+              // 清空localStorage里的存储
+                localStorage.clear()
+              }
               this.$router.push({ path: './' })
             } else {
               this.$message.error('用户名或密码错误')
@@ -174,6 +198,9 @@ export default {
           })
       }
     }
+  },
+  mounted () {
+    this.getlocalStorage()
   }
 }
 </script>

@@ -61,7 +61,8 @@ function generateLoaders (loader, loaderOptions) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader',
+        publicPath: '../../' // element-ui的icon设置
       })
     } else {
       return ['vue-style-loader'].concat(loaders)

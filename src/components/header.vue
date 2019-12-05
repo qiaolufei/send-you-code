@@ -4,9 +4,9 @@
       :default-active="this.$route.path"
       router
       mode="horizontal"
-      background-color="#545c64"
+      background-color="#409EFF"
       text-color="#fff"
-      active-text-color="#ffd04b"
+      active-text-color="#23305E"
     >
       <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name" :class="item.class">
         {{ item.navItem }}
@@ -49,7 +49,7 @@ export default {
           duration: 1000
         })
         sessionStorage.setItem('name', '')
-        this.$router.push({ path: './' })
+        this.$router.go(0)
       }).catch(() => {
         this.$message({
           type: 'info',

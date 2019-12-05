@@ -256,10 +256,10 @@ export default {
           }
           this.axios.post(this.$api + '/record/addRecord', this.$qs.stringify(params))
             .then(res => {
-              console.log(res)
+              // console.log(res)
             })
           // 新窗口打开消息中心页面
-          let routerData = this.$router.resolve({path: '/news', query: {wantId: val}})
+          let routerData = this.$router.resolve({path: '/news'})
           window.open(routerData.href, '_blank')
         }).catch(() => {
           this.$message({
