@@ -4,9 +4,9 @@
       :default-active="this.$route.path"
       router
       mode="horizontal"
-      background-color="#409EFF"
-      text-color="#fff"
-      active-text-color="#23305E"
+      background-color="#fff"
+      text-color="#303133"
+      active-text-color="#409EFF"
     >
       <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name" :class="item.class">
         {{ item.navItem }}
@@ -65,7 +65,7 @@ export default {
 <style lang="less" scoped>
   .name {
     font-size: 0.8rem;
-    font-family: STXingkai;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   }
   .login{
     margin-left: 60%

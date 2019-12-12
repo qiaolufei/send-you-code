@@ -46,10 +46,12 @@
             <h5>温馨提示：请勿发布涉及政治、广告、营销、翻墙、违反国家法律法规等敏感内容</h5>
             <el-button class="post" @click="postWant" type="primary">发布需求</el-button>
         </div>
+        <footpage></footpage>
     </div>
 </template>
 <script>
 import headpage from '@/components/header'
+import footpage from '@/components/footer'
 export default {
   data () {
     return {
@@ -70,7 +72,8 @@ export default {
     }
   },
   components: {
-    headpage
+    headpage,
+    footpage
   },
   methods: {
     isable () {
