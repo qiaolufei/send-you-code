@@ -11,9 +11,9 @@
 - [x] 编辑个人信息
 - [x] 浏览历史发布需求
 #### 部分截图
-![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/1.jpg "登录")
-![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/2.png "首页")
-![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/3.png "发布需求")
-![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/4.png "浏览需求")
-![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/5.png "聊天")
-![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/6.png "个人资料")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshots/1.jpg "登录")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshots/2.png "首页")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshots/3.png "发布需求")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshots/4.png "浏览需求")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshots/5.png "聊天")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshots/6.png "个人资料")
