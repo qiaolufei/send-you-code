@@ -9,7 +9,9 @@
       active-text-color="#409EFF"
     >
       <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name" :class="item.class">
-        {{ item.navItem }}
+        <div>
+          <span>{{ item.navItem }}</span>
+        </div>
       </el-menu-item>
       <el-menu-item v-if="name===null || name===''" index="/login" class="login">
         登录
@@ -29,7 +31,7 @@ export default {
   data () {
     return {
       navList: [
-        {name: '/', class: 'name', navItem: '码上到'},
+        {name: '/', class: 'name', navItem: '易代码'},
         {name: '/postWant', class: 'postWant', navItem: '发布需求'},
         {name: '/wantsList', class: 'wantsList', navItem: '需求列表'}
       ],
@@ -49,7 +51,7 @@ export default {
           duration: 1000
         })
         sessionStorage.setItem('name', '')
-        this.$router.go(0)
+        this.$router.push({path: './'})
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -65,7 +67,7 @@ export default {
 <style lang="less" scoped>
   .name {
     font-size: 0.8rem;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: '华文彩云'
   }
   .login{
     margin-left: 60%

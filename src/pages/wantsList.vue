@@ -43,7 +43,7 @@
               <span>{{item.theme}}</span>
            </div>
            <div>
-            <span>{{item.name}}</span> <span>{{item.postTime}}发布</span>
+            <span style="color:#476B2D">{{item.name}}</span> <span>{{item.postTime}}发布</span>
            </div>
            <br>
            <div>
@@ -67,10 +67,10 @@
              <span>总薪资：</span><b>{{item.salary}}元</b>
            </div>
            <div>
-             <span>附件：</span><b>{{item.annex}}</b>
+             <!-- <span>附件：</span><b>{{item.annex}}</b> -->
            </div>
-           <el-button type="primary" @click="handle(item.wantID)" plain class="allWants__one-handle">处理需求</el-button>
-           <span>已有31人沟通</span>
+           <el-button :disabled="item.name == name" type="primary" @click="handle(item.wantID)" plain class="allWants__one-handle">处理需求</el-button>
+           <span>已有{{item.nums}}人沟通</span>
           </div>
           </center>
         </div>
@@ -83,6 +83,21 @@
             layout="total, prev, pager, next"
             :total=total>
           </el-pagination>
+          <el-backtop>
+            <div
+              style="{
+                height: 100%;
+                width: 100%;
+                background-color: #f2f5f6;
+                box-shadow: 0 0 6px rgba(0,0,0, .12);
+                text-align: center;
+                line-height: 40px;
+                color: #1989fa;
+              }"
+            >
+            TOP
+            </div>
+          </el-backtop>
     </div>
 </template>
 <script>
@@ -90,8 +105,9 @@ import headpage from '@/components/header'
 export default {
   data () {
     return {
+      name: sessionStorage.getItem('name'),
       skills: [{id: '全部'}, {id: 'PHP'}, {id: 'C'}, {id: 'C++'}, {id: 'python'},
-        {id: 'Java'}, {id: 'javaScript'}, {id: 'Android'}, {id: 'Go'}, {id: 'NodeJS'}, {id: '前端开发'}, {id: '其它'}],
+        {id: 'Java'}, {id: 'javaScript'}, {id: 'Android'}, {id: 'Go'}, {id: 'NodeJS'}, {id: '前端开发'}, {id: 'Vue.js'}, {id: '其它'}],
       timeType: [{id: '全部'}, {id: '按天'}, {id: '按小时'}],
       search: {
         skill: '全部',
@@ -283,7 +299,7 @@ export default {
 .selectList{
   margin: 0 auto;
   margin-top: 2%;
-  width: 80%;
+  width: 98%;
   background-color: #E4E7ED;
   padding: 1% 1% 1% 1%
 }
@@ -301,6 +317,7 @@ export default {
     border-radius: 0.1rem;
     padding: 1% 1% 1% 1%;
     &-wantTheme{
+      font-family: '方正粗黑宋简体';
       font-size: 0.5rem;
       text-align: center
     }
@@ -312,7 +329,7 @@ export default {
       margin-left:1%;
     }
     &-handle{
-      margin-left: 60%
+      margin-left: 60%;
     }
   }
 }

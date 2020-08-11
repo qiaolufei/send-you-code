@@ -16,7 +16,7 @@
         <br />
         <br />
         <el-checkbox class="loginForm__remember" v-model="checked">记住我</el-checkbox>
-        <a class="loginForm__forgetPW" href="#">忘记密码</a>
+        <a class="loginForm__forgetPW" href="#" @click="toForget = true">忘记密码</a>
         <a class="loginForm__toRegister" href="#" @click="toRegister = true">立即注册</a>
       </el-form>
       <!-- <div class="chooseForm">
@@ -26,18 +26,39 @@
             <a href="#"><img style="margin-left:10%" src="../img/qq.png"></a>
       </div>-->
     </div>
-    <!-- 注册弹窗 -->
-    <el-dialog title="注册" :visible.sync="toRegister" width="40%" class="registerForm">
+    <el-dialog title="忘记密码" :visible.sync="toForget" width="40%" class="registerForm">
       <el-input v-model.lazy="registerForm.name" @change="nameIsHave()" placeholder="用户名">
           <i slot="prefix" class="el-input__icon el-icon-user"></i>
       </el-input>
       <el-input class="marTop" v-model="registerForm.phone" @change="phoneIsRight()" placeholder="手机号">
           <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
       </el-input>
-      <el-input class="marTop" type="password" v-model="registerForm.password1" placeholder="设置密码">
+      <el-input class="marTop" type="password" v-model="registerForm.password1" placeholder="重置密码">
           <i slot="prefix" class="el-input__icon el-icon-lock"></i>
       </el-input>
-      <el-input class="marTop" type="password" v-model="registerForm.password2" @change="PwdIsRight()" placeholder="确认密码">
+      <el-input class="marTop" type="password" v-model="registerForm.password2" @change="PwdIsRight()" placeholder="再次确认密码">
+          <i slot="prefix" class="el-input__icon el-icon-circle-check"></i>
+      </el-input>
+      <!-- <el-input class="marTop" placeholder="验证码" style="width:50%">
+          <i slot="prefix" class="el-input__icon el-icon-s-comment"></i>
+      </el-input>
+      <el-input type="button" class="registerForm__getV" style="width:30%" value="获取验证码"></el-input> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" :disabled="isdisabled" @click="register()">重置密码</el-button>
+      </span>
+    </el-dialog>
+    <!-- 注册弹窗 -->
+    <el-dialog title="注册" :visible.sync="toRegister" width="40%" class="registerForm">
+      <el-input v-model.lazy="a.name" @change="nameIsHave()" placeholder="用户名">
+          <i slot="prefix" class="el-input__icon el-icon-user"></i>
+      </el-input>
+      <el-input class="marTop" v-model="a.phone" @change="phoneIsRight()" placeholder="手机号">
+          <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
+      </el-input>
+      <el-input class="marTop" type="password" v-model="a.password1" placeholder="设置密码">
+          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+      </el-input>
+      <el-input class="marTop" type="password" v-model="a.password2" @change="PwdIsRight()" placeholder="确认密码">
           <i slot="prefix" class="el-input__icon el-icon-circle-check"></i>
       </el-input>
       <!-- <el-input class="marTop" placeholder="验证码" style="width:50%">
@@ -48,6 +69,25 @@
         <el-button type="primary" :disabled="isdisabled" @click="register()">注册</el-button>
       </span>
     </el-dialog>
+    <vue-particles
+        color="#409EFF"
+        :particleOpacity="0.7"
+        :particlesNumber="60"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#409EFF"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="2"
+        :hoverEffect="false"
+        hoverMode="grab"
+        :clickEffect="false"
+        clickMode="push"
+        class="particle"
+      >
+      </vue-particles>
   </div>
 </template>
 <script>
@@ -55,6 +95,12 @@ import headpage from '@/components/header'
 export default {
   data () {
     return {
+      a: {
+        name: '',
+        phone: '',
+        password1: '',
+        password2: ''
+      },
       loginForm: { // 登录数据
         name: '',
         password: ''
@@ -65,6 +111,7 @@ export default {
         password1: '',
         password2: ''
       },
+      toForget: false,
       toRegister: false, // 注册弹窗
       checked: false, // 记住我
       isdisabled: true, // 注册按钮
@@ -205,12 +252,21 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.particle{
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: -100;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50% 50%;
+}
 .loginForm {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   text-align: center;
+  width: 40%;
+  margin-top: 5%;
+  margin-left: 30%;
   &__name {
     font-size: 0.4rem;
     font-weight: 700;

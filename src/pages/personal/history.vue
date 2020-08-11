@@ -2,6 +2,7 @@
     <div>
         <headpage></headpage>
         <personalmenu></personalmenu>
+        <div class="history">暂无历史任务</div>
     </div>
 </template>
 <script>
@@ -23,4 +24,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.history{
+  font-size: 40px;
+  text-align: center;
+  margin-top: 40px;
+}
 </style>

@@ -1,43 +1,19 @@
-# my_vue_demo
+# 易代码
 
-> A Vue.js project
+> 前端采用Vue框架，后端采用Spring Boot框架实现，一款用户可以自由发单、接单的程序员有偿互助平台
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-
-# Installed environment
-    "axios": "^0.19.0",
-    "element-ui": "^2.12.0",
-    "jquery": "^3.4.1",
-    "qs": "^6.8.0",
-    "vue": "^2.5.2",
-    "vue-axios": "^2.1.4",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.1.1"
-
-    "eslint": "^4.15.0",
-    "less": "^3.10.3"
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+#### 目前具有的功能
+- [x] 注册、登录、注销
+- [x] 首页跳转第三方平台 
+- [x] 发布需求
+- [x] 按需浏览查找需求任务
+- [x] 双方沟通交流
+- [x] 编辑个人信息
+- [x] 浏览历史发布需求
+#### 部分截图
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/1.jpg "登录")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/2.png "首页")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/3.png "发布需求")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/4.png "浏览需求")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/5.png "聊天")
+![markdown](https://github.com/qiaolufei/send-you-code/blob/master/screenshot/6.png "个人资料")

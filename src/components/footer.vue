@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="footer">
-            <el-link class="footer__link" href="#" :underline="false">用户反馈</el-link>
-            <el-link :underline="false">联系我们</el-link>
-            <el-link :underline="false">关于我们</el-link>
-            <el-link :underline="false">免责声明</el-link>
+            <el-link class="footer__link" href="/suggest" :underline="false">用户反馈</el-link>
+            <el-link href="/contactUs" :underline="false">联系我们</el-link>
+            <el-link href="/aboutUs" :underline="false">关于我们</el-link>
+            <el-link href="/disclaimer" :underline="false">免责声明</el-link>
             <br>
             <span class="footer__span">Copyright © 2019-2020</span>
         </div>

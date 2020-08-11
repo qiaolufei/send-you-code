@@ -8,6 +8,10 @@ import info from '@/pages/personal/info'
 import news from '@/pages/personal/news'
 import myWants from '@/pages/personal/myWants'
 import history from '@/pages/personal/history'
+import suggest from '@/pages/foot/suggest'
+import contactUs from '@/pages/foot/contactUs'
+import aboutUs from '@/pages/foot/aboutUs'
+import disclaimer from '@/pages/foot/disclaimer'
 Vue.use(Router)
 
 /**
@@ -59,6 +63,26 @@ export default new Router({
       path: '/history',
       name: 'history',
       component: history
+    },
+    {
+      path: '/suggest',
+      name: 'suggest',
+      component: suggest
+    },
+    {
+      path: '/contactUs',
+      name: 'contactUs',
+      component: contactUs
+    },
+    {
+      path: '/aboutUs',
+      name: 'aboutUs',
+      component: aboutUs
+    },
+    {
+      path: '/disclaimer',
+      name: 'disclaimer',
+      component: disclaimer
     }
   ]
 })

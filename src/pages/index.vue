@@ -25,7 +25,7 @@
                   <h4>任何有代码需求的甲方或任何有代码能力的乙方</h4>
                 </div>
                 <div v-if="item.name == '需求范围'">
-                  <h4>√大学课程设计</h4>
+                  <h4>√网页设计</h4>
                   <h4>√BUG查找处理</h4>
                   <h4>√项目重构</h4>
                   <h4>√项目外包</h4>
@@ -47,6 +47,7 @@
               <span class="index2__title">程序员必备网站</span>
               <div class="index2__info">
                 <div v-for="(item1, index1) in websites" :key="index1" class="index2__info-m" @click="to(item1.url)">
+                  <div class="box">
                   <el-popover
                     placement="top-start"
                     title="简介"
@@ -56,6 +57,7 @@
                   <img slot="reference"  :src=item1.logo class="index2__info-m__logo" />
                   </el-popover>
                   <span class="index2__info-m__name">{{item1.name}}</span>
+                  </div>
                 </div>
               </div>
         </div>
@@ -225,6 +227,7 @@ export default {
     width: 100%;
     &-m{
       float: left;
+      display: table;
       width:15%;
       margin-left: 8%;
       margin-top: 2%;
@@ -232,10 +235,13 @@ export default {
       border: 1px solid #409EFF;
       border-radius: 10px;
       padding: 0;
-      text-align: center;
+      .box{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+      }
       &__logo{
         width: 40%;
-        margin-top: 5%
       }
       &__name{
         display: block;
